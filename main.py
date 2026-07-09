@@ -11,6 +11,9 @@ if __name__ == '__main__':
     with open("config/us_fire_2021_1e7.yml", "r", encoding="utf8") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
 
+    import failed_locations_list
+    f_locations = failed_locations_list.locations_list
+
     # TODO: Enter your gcloud key file path here.
     key_file = '/content/geewildfires-79e8d89f1978.json'
 
@@ -29,9 +32,14 @@ if __name__ == '__main__':
     N_BUFFER_DAYS = 4
 
     # Extract fire names from config file.
-    fire_names = list(config.keys())
-    for non_fire_key in ["output_bucket", "rectangular_size", "year"]:
-        fire_names.remove(non_fire_key)
+    # uncomment when running whole file for first time
+    #fire_names = list(config.keys())
+
+    # uncomment the below when rerunning for failed fires
+    fire_names = f_locations
+
+    #for non_fire_key in ["output_bucket", "rectangular_size", "year"]:
+    #    fire_names.remove(non_fire_key)
     locations = fire_names
 
     # Keep track of any failures happening, to be able to manually re-run these later.
