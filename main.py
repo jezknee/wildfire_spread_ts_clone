@@ -12,10 +12,10 @@ if __name__ == '__main__':
         config = yaml.load(f, Loader=yaml.FullLoader)
 
     # TODO: Enter your gcloud key file path here.
-    key_file = 'your_gcloud_key_file.json'
+    key_file = '/content/geewildfires-79e8d89f1978.json'
 
     # TODO: Enter your gcloud service account here.
-    service_account = 'yourname@yourbucket.iam.gserviceaccount.com'
+    service_account = 'geewildfires@geewildfires.iam.gserviceaccount.com'
     credentials = ee.ServiceAccountCredentials(service_account, key_file)
     ee.Initialize(credentials)
 

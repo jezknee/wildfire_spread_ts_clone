@@ -1,4 +1,4 @@
-output_bucket: firespreadprediction
+output_bucket: jk_wildfiresspreadts
 rectangular_size: 0.5
 year: 2019
 fire_23410601:
