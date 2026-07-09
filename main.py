@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
     # TODO: Enter your desired config file path here. If you just want to recreate the results from the paper, 
     # use the config files in the config folder to download the data belonging to the specified year. 
-    with open("config/us_fire_2021_1e7.yml", "r", encoding="utf8") as f:
+    with open("config/us_fire_2019_1e7.yml", "r", encoding="utf8") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
 
     # uncomment when running failed locations manual list
