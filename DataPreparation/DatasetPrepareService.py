@@ -4,6 +4,7 @@ import os
 import ee
 import imageio
 from google.cloud import storage
+import time
 
 from .satellites.FirePred import FirePred
 
@@ -56,7 +57,13 @@ class DatasetPrepareService:
                                                                  self.geometry)        
         return img_collection
 
-    def download_image_to_gcloud(self, image_collection, index:str, utm_zone:str):
+    def get_active_task_count(self):
+        """Returns the number of tasks currently running or in GEE's queue."""
+        tasks = ee.batch.Task.list()
+        active_states = ('READY', 'RUNNING')
+        return sum(1 for t in tasks if t.state in active_states)
+
+    def download_image_to_gcloud(self, image_collection, index:str, utm_zone:str, max_tasks=2900):
         """_summary_ Export the given images to google cloud. The output image is a rectangular image, 
         with the center at the given latitude and longitude.
 
@@ -80,6 +87,11 @@ class DatasetPrepareService:
             maxPixels=1e13,
             region=self.geometry.toGeoJSON()['coordinates'],
         )
+
+        # Wait if we're close to GEE's 3000-task queue limit
+        while self.get_active_task_count() >= max_tasks:
+            print(f"Task queue near limit ({max_tasks}). Waiting 5 mins before starting next export...")
+            time.sleep(300)
         print('Start with image task (id: {}).'.format(image_task.id))
         image_task.start()
         
